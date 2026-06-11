@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiveDeal.ch — Deine Stadt. Deine Deals. Jetzt live.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --crimson:#DC2626;--crimson-dark:#991B1B;--crimson-glow:rgba(220,38,38,.15);
+  --charcoal:#1a1a2e;--charcoal-mid:#16213e;--charcoal-light:#0f3460;
+  --gold:#F59E0B;--gold-light:#FBBF24;--gold-glow:rgba(245,158,11,.2);
+  --white:#FAFAFA;--off-white:#F1F0EB;--gray-100:#E8E6E1;--gray-300:#B8B5AD;--gray-500:#78756E;--gray-700:#3D3B37;
+  --radius:14px;--radius-sm:8px;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'DM Sans','Helvetica Neue',sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);color:var(--charcoal);background:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+/* ========== UTILITY ========== */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section-label{font-family:var(--font-body);font-weight:700;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--crimson);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-label::before{content:'';width:28px;height:2px;background:var(--crimson);display:inline-block}
+.section-title{font-family:var(--font-display);font-weight:900;font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.1;color:var(--charcoal);margin-bottom:16px}
+.section-sub{font-size:1.1rem;color:var(--gray-500);max-width:560px;line-height:1.65}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:50px;font-family:var(--font-body);font-weight:700;font-size:.95rem;border:none;cursor:pointer;transition:all .35s cubic-bezier(.4,0,.2,1)}
+.btn-primary{background:var(--crimson);color:#fff;box-shadow:0 4px 24px rgba(220,38,38,.35)}
+.btn-primary:hover{background:var(--crimson-dark);transform:translateY(-2px);box-shadow:0 8px 32px rgba(220,38,38,.45)}
+.btn-outline{background:transparent;color:var(--charcoal);border:2px solid var(--gray-300)}
+.btn-outline:hover{border-color:var(--charcoal);background:var(--charcoal);color:#fff}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--charcoal);box-shadow:0 4px 24px var(--gold-glow)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(245,158,11,.4)}
+
+/* ========== SCROLL REVEAL ========== */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ========== NAV ========== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .4s ease}
+nav.scrolled{background:rgba(26,26,46,.95);backdrop-filter:blur(16px);padding:10px 0;box-shadow:0 4px 40px rgba(0,0,0,.2)}
+nav .container{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-display);font-weight:900;font-size:1.6rem;color:#fff;display:flex;align-items:center;gap:6px}
+.nav-logo .dot{width:8px;height:8px;background:var(--crimson);border-radius:50%;animation:pulse-dot 2s infinite}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:rgba(255,255,255,.7);font-weight:500;font-size:.9rem;transition:color .3s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--crimson);color:#fff;padding:10px 24px;border-radius:50px;font-weight:700;font-size:.85rem;transition:all .3s}
+.nav-cta:hover{background:var(--crimson-dark);transform:scale(1.03)}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+
+.mobile-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.mobile-toggle span{display:block;width:24px;height:2px;background:#fff;margin:6px 0;transition:.3s}
+
+/* ========== HERO ========== */
+.hero{min-height:100vh;background:var(--charcoal);position:relative;display:flex;align-items:center;overflow:hidden;padding:120px 0 80px}
+.hero::before{content:'';position:absolute;top:-20%;right:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(220,38,38,.12) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-15%;width:600px;height:600px;background:radial-gradient(circle,rgba(245,158,11,.08) 0%,transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);border-radius:50px;padding:6px 16px 6px 8px;margin-bottom:24px;animation:fadeInDown .8s ease}
+.hero-badge .live-indicator{width:8px;height:8px;background:var(--crimson);border-radius:50%;animation:pulse-dot 1.5s infinite}
+.hero-badge span{font-size:.8rem;font-weight:600;color:var(--crimson);letter-spacing:.06em;text-transform:uppercase}
+.hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(2.6rem,5.5vw,4.2rem);line-height:1.05;color:#fff;margin-bottom:20px;animation:fadeInUp .8s ease}
+.hero h1 .accent{color:var(--crimson);position:relative;display:inline-block}
+.hero h1 .accent::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:4px;background:var(--crimson);opacity:.4;border-radius:2px}
+.hero-sub{font-size:1.15rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:480px;margin-bottom:36px;animation:fadeInUp .8s ease .15s both}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeInUp .8s ease .25s both}
+
+.hero-cards{position:relative;animation:fadeInRight 1s ease .3s both}
+.hero-card{background:rgba(255,255,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px;margin-bottom:16px;transition:transform .4s ease}
+.hero-card:hover{transform:translateX(-4px)}
+.hero-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.hero-card-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--crimson);background:rgba(220,38,38,.12);padding:4px 10px;border-radius:20px}
+.hero-card-timer{display:flex;align-items:center;gap:4px;font-size:.8rem;font-weight:600;color:var(--gold)}
+.hero-card-timer .timer-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse-dot 1.5s infinite}
+.hero-card h3{color:#fff;font-weight:700;font-size:1.05rem;margin-bottom:6px}
+.hero-card-prices{display:flex;align-items:baseline;gap:10px}
+.hero-card-prices .original{color:rgba(255,255,255,.35);text-decoration:line-through;font-size:.9rem}
+.hero-card-prices .deal{color:var(--crimson);font-weight:800;font-size:1.3rem}
+.hero-card-prices .save{background:rgba(220,38,38,.12);color:var(--crimson);font-weight:700;font-size:.75rem;padding:3px 8px;border-radius:20px;margin-left:auto}
+.hero-card.vip{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.06)}
+.hero-card.vip .hero-card-cat{color:var(--gold);background:rgba(245,158,11,.15)}
+.hero-card.vip .deal{color:var(--gold)}
+.hero-card.vip .save{color:var(--gold);background:rgba(245,158,11,.15)}
+.vip-badge-tag{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:700;color:var(--gold);margin-bottom:8px}
+.vip-badge-tag svg{width:14px;height:14px}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
+/* ========== STATS BAR ========== */
+.stats-bar{background:var(--charcoal-mid);border-top:1px solid rgba(255,255,255,.06);padding:40px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.stat-item .stat-num{font-family:var(--font-display);font-weight:900;font-size:2.4rem;color:#fff;line-height:1}
+.stat-item .stat-num .highlight{color:var(--crimson)}
+.stat-item .stat-label{color:rgba(255,255,255,.4);font-size:.85rem;font-weight:500;margin-top:4px}
+
+/* ========== HOW IT WORKS ========== */
+.how-it-works{padding:100px 0;background:var(--white);position:relative}
+.how-it-works::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gray-100),transparent)}
+.how-header{text-align:center;margin-bottom:64px}
+.how-header .section-label{justify-content:center}
+.how-header .section-label::before{display:none}
+.how-header .section-sub{margin:0 auto}
+
+.how-tabs{display:flex;justify-content:center;gap:4px;margin-bottom:48px;background:var(--gray-100);border-radius:50px;padding:4px;max-width:400px;margin-left:auto;margin-right:auto}
+.how-tab{flex:1;padding:12px 24px;border-radius:50px;font-weight:700;font-size:.9rem;text-align:center;cursor:pointer;transition:all .3s;border:none;background:none;font-family:var(--font-body);color:var(--gray-500)}
+.how-tab.active{background:var(--charcoal);color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+
+.how-steps{display:none}
+.how-steps.active{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.step-card{text-align:center;padding:40px 28px;border-radius:var(--radius);background:var(--white);border:1px solid var(--gray-100);transition:all .4s ease;position:relative}
+.step-card:hover{border-color:var(--crimson);box-shadow:0 12px 48px rgba(220,38,38,.08);transform:translateY(-4px)}
+.step-num{width:48px;height:48px;border-radius:50%;background:var(--crimson-glow);color:var(--crimson);font-family:var(--font-display);font-weight:900;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.step-icon{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--crimson-glow),rgba(220,38,38,.05));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.8rem}
+.step-card h3{font-weight:700;font-size:1.1rem;margin-bottom:8px}
+.step-card p{color:var(--gray-500);font-size:.92rem;line-height:1.6}
+.step-connector{display:none}
+
+/* ========== DEALS SHOWCASE ========== */
+.deals{padding:100px 0;background:var(--off-white);position:relative}
+.deals::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.deals-header{text-align:center;margin-bottom:16px;position:relative;z-index:1}
+.deals-header .section-label{justify-content:center}
+.deals-header .section-label::before{display:none}
+.deals-header .section-sub{margin:0 auto}
+
+.deals-filter{display:flex;justify-content:center;gap:8px;margin:32px 0 48px;flex-wrap:wrap;position:relative;z-index:1}
+.filter-btn{padding:8px 20px;border-radius:50px;font-size:.85rem;font-weight:600;border:1px solid var(--gray-300);background:var(--white);color:var(--gray-500);cursor:pointer;transition:all .3s;font-family:var(--font-body)}
+.filter-btn.active,.filter-btn:hover{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
+
+.deals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative;z-index:1}
+.deal-card{background:var(--white);border-radius:var(--radius);overflow:hidden;border:1px solid var(--gray-100);transition:all .45s cubic-bezier(.4,0,.2,1);position:relative}
+.deal-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.deal-img{height:180px;position:relative;overflow:hidden}
+.deal-img-bg{width:100%;height:100%;object-fit:cover}
+.deal-overlay{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start}
+.deal-category{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:5px 12px;border-radius:20px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);color:#fff}
+.deal-timer-badge{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:rgba(220,38,38,.9);color:#fff;font-weight:700;font-size:.78rem}
+.deal-timer-badge .pulse{width:6px;height:6px;background:#fff;border-radius:50%;animation:pulse-dot 1.2s infinite}
+.deal-body{padding:20px}
+.deal-business{font-size:.78rem;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.deal-title{font-weight:700;font-size:1.05rem;margin-bottom:10px;line-height:1.3}
+.deal-pricing{display:flex;align-items:baseline;gap:8px;margin-bottom:14px}
+.deal-pricing .original{color:var(--gray-300);text-decoration:line-through;font-size:.9rem}
+.deal-pricing .price{color:var(--crimson);font-weight:800;font-size:1.4rem}
+.deal-pricing .save-pct{margin-left:auto;background:var(--crimson-glow);color:var(--crimson);font-weight:700;font-size:.8rem;padding:4px 10px;border-radius:20px}
+.deal-progress{margin-bottom:14px}
+.deal-progress-bar{height:4px;background:var(--gray-100);border-radius:4px;overflow:hidden}
+.deal-progress-fill{height:100%;background:var(--crimson);border-radius:4px;transition:width 1s ease}
+.deal-progress-text{display:flex;justify-content:space-between;margin-top:6px;font-size:.75rem;color:var(--gray-500)}
+.deal-footer{display:flex;align-items:center;justify-content:space-between}
+.deal-btn{padding:10px 20px;border-radius:50px;font-weight:700;font-size:.85rem;background:var(--crimson);color:#fff;border:none;cursor:pointer;transition:all .3s;font-family:var(--font-body)}
+.deal-btn:hover{background:var(--crimson-dark);transform:scale(1.03)}
+.deal-rating{display:flex;align-items:center;gap:4px;font-size:.85rem;font-weight:600;color:var(--gray-700)}
+
+.deal-card.vip-deal{border-color:rgba(245,158,11,.3)}
+.deal-card.vip-deal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));z-index:2}
+.deal-card.vip-deal .deal-timer-badge{background:rgba(245,158,11,.9)}
+.deal-card.vip-deal .price{color:var(--gold)}
+.deal-card.vip-deal .save-pct{color:var(--gold);background:var(--gold-glow)}
+.deal-card.vip-deal .deal-btn{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--charcoal)}
+.vip-exclusive-tag{display:inline-flex;align-items:center;gap:5px;background:var(--gold-glow);color:var(--gold);font-weight:700;font-size:.72rem;padding:4px 10px;border-radius:20px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.vip-exclusive-tag svg{width:12px;height:12px;fill:var(--gold)}
+
+/* ========== FOR BUSINESSES ========== */
+.businesses{padding:100px 0;background:var(--charcoal);color:#fff;position:relative;overflow:hidden}
+.businesses::before{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(135deg,rgba(220,38,38,.06) 0%,transparent 60%);pointer-events:none}
+.biz-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.biz-content .section-label{color:var(--crimson)}
+.biz-content .section-title{color:#fff}
+.biz-content .section-sub{color:rgba(255,255,255,.5)}
+.biz-features{margin-top:36px;display:flex;flex-direction:column;gap:20px}
+.biz-feature{display:flex;gap:16px;align-items:flex-start}
+.biz-feature-icon{width:48px;height:48px;border-radius:12px;background:rgba(220,38,38,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem}
+.biz-feature h4{font-weight:700;font-size:1rem;margin-bottom:4px}
+.biz-feature p{color:rgba(255,255,255,.45);font-size:.9rem;line-height:1.5}
+
+.biz-visual{position:relative}
+.biz-dashboard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:28px;backdrop-filter:blur(8px)}
+.biz-dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.biz-dash-header h4{font-weight:700;font-size:.95rem}
+.biz-dash-header span{font-size:.8rem;color:rgba(255,255,255,.4)}
+.biz-dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.biz-stat{background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:16px;text-align:center}
+.biz-stat .num{font-family:var(--font-display);font-weight:900;font-size:1.6rem;color:var(--crimson)}
+.biz-stat .label{font-size:.75rem;color:rgba(255,255,255,.4);margin-top:2px}
+.biz-chart{height:100px;display:flex;align-items:flex-end;gap:6px;padding:12px 0}
+.biz-chart-bar{flex:1;background:linear-gradient(to top,rgba(220,38,38,.3),rgba(220,38,38,.7));border-radius:4px 4px 0 0;transition:height .6s ease;min-height:8px}
+
+/* ========== VIP SWISS ========== */
+.vip-section{padding:100px 0;background:linear-gradient(180deg,var(--white) 0%,var(--off-white) 100%);position:relative}
+.vip-header{text-align:center;margin-bottom:64px}
+.vip-header .section-label{justify-content:center;color:var(--gold)}
+.vip-header .section-label::before{background:var(--gold)}
+.vip-header .section-sub{margin:0 auto}
+
+.vip-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.vip-tier{background:var(--white);border:2px solid var(--gray-100);border-radius:var(--radius);padding:36px 28px;text-align:center;transition:all .4s ease;position:relative}
+.vip-tier:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.vip-tier.featured{border-color:var(--gold);background:linear-gradient(180deg,rgba(245,158,11,.03),var(--white))}
+.vip-tier.featured::before{content:'BELIEBT';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--charcoal);font-weight:800;font-size:.7rem;letter-spacing:.1em;padding:4px 16px;border-radius:20px}
+.tier-icon{width:64px;height:64px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:1.8rem}
+.tier-silver .tier-icon{background:linear-gradient(135deg,#C0C0C0,#E8E8E8);color:#666}
+.tier-gold .tier-icon{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--charcoal)}
+.tier-platinum .tier-icon{background:linear-gradient(135deg,#1a1a2e,#2d2d4e);color:#fff}
+.vip-tier h3{font-family:var(--font-display);font-weight:800;font-size:1.4rem;margin-bottom:4px}
+.vip-tier .tier-price{font-size:2rem;font-weight:900;color:var(--charcoal);margin:16px 0 4px}
+.vip-tier .tier-price span{font-size:.85rem;font-weight:500;color:var(--gray-500)}
+.vip-tier .tier-period{font-size:.85rem;color:var(--gray-500);margin-bottom:24px}
+.tier-benefits{list-style:none;text-align:left;margin-bottom:28px}
+.tier-benefits li{padding:8px 0;font-size:.9rem;color:var(--gray-700);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--gray-100)}
+.tier-benefits li:last-child{border:none}
+.tier-benefits li .check{color:var(--crimson);font-weight:700;font-size:1rem}
+.tier-gold .tier-benefits li .check{color:var(--gold)}
+.vip-tier .btn{width:100%}
+
+/* ========== BUSINESS MODEL ========== */
+.model{padding:100px 0;background:var(--charcoal);color:#fff}
+.model-header{text-align:center;margin-bottom:64px}
+.model-header .section-label{justify-content:center;color:var(--crimson)}
+.model-header .section-label::before{background:var(--crimson)}
+.model-header .section-title{color:#fff}
+.model-header .section-sub{color:rgba(255,255,255,.5);margin:0 auto}
+.model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.model-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:36px 28px;text-align:center;transition:all .4s ease}
+.model-card:hover{border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.04);transform:translateY(-4px)}
+.model-icon{width:64px;height:64px;border-radius:16px;background:rgba(220,38,38,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.6rem}
+.model-card h3{font-weight:700;font-size:1.1rem;margin-bottom:8px}
+.model-card p{color:rgba(255,255,255,.45);font-size:.9rem;line-height:1.6}
+.model-card .model-pct{font-family:var(--font-display);font-weight:900;font-size:2rem;color:var(--crimson);margin-top:16px}
+
+/* ========== CTA ========== */
+.cta-section{padding:100px 0;background:var(--white);position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,var(--crimson-glow),transparent 60%);pointer-events:none}
+.cta-inner{text-align:center;max-width:700px;margin:0 auto;position:relative;z-index:1}
+.cta-inner .section-label{justify-content:center}
+.cta-inner .section-label::before{display:none}
+.cta-inner .section-title{font-size:clamp(2rem,4vw,3rem)}
+.cta-inner .section-sub{margin:0 auto 36px}
+.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ========== FOOTER ========== */
+footer{background:var(--charcoal);padding:60px 0 30px;color:rgba(255,255,255,.4)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand .nav-logo{margin-bottom:12px}
+.footer-brand p{font-size:.88rem;line-height:1.6;max-width:280px}
+.footer-col h4{color:#fff;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}
+.footer-col a{display:block;font-size:.88rem;padding:4px 0;transition:color .3s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.82rem}
+.swiss-made{display:flex;align-items:center;gap:6px}
+.swiss-cross{width:16px;height:16px;background:var(--crimson);border-radius:2px;position:relative;display:inline-flex;align-items:center;justify-content:center}
+.swiss-cross::before{content:'+';color:#fff;font-weight:900;font-size:12px;line-height:1}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .hero-cards{max-width:500px}
+  .biz-grid{grid-template-columns:1fr;gap:40px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .mobile-toggle{display:block}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:20px}
+  .how-steps.active{grid-template-columns:1fr}
+  .deals-grid{grid-template-columns:1fr}
+  .vip-tiers{grid-template-columns:1fr}
+  .model-grid{grid-template-columns:1fr}
+  .deals-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center}
+}
+@media(max-width:480px){
+  .deals-grid{grid-template-columns:1fr}
+  .hero-actions{flex-direction:column}
+  .cta-buttons{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">Live<span style="color:var(--crimson)">Deal</span><span class="dot"></span></a>
+    <div class="nav-links">
+      <a href="#wie-funktionierts">So gehts</a>
+      <a href="#deals">Deals</a>
+      <a href="#fuer-firmen">Fuer Firmen</a>
+      <a href="#vip">VIP Swiss</a>
+      <a href="#kontakt" class="nav-cta">Jetzt starten</a>
+    </div>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="live-indicator"></span>
+          <span>Jetzt live in der Schweiz</span>
+        </div>
+        <h1>Exklusive Deals.<br>Deine Stadt.<br><span class="accent">Jetzt live.</span></h1>
+        <p class="hero-sub">Entdecke zeitlich begrenzte Angebote von lokalen Geschaeften in deiner Naehe. Spare bis zu 70% bei Restaurants, Fitness, Beauty und mehr.</p>
+        <div class="hero-actions">
+          <a href="#deals" class="btn btn-primary">Deals entdecken &rarr;</a>
+          <a href="#fuer-firmen" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.25)">Fuer Firmen</a>
+        </div>
+      </div>
+      <div class="hero-cards">
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <span class="hero-card-cat">Restaurant</span>
+            <span class="hero-card-timer"><span class="timer-dot"></span> 2h 34m</span>
+          </div>
+          <h3>3-Gang Menu im Chez Pierre, Zuerich</h3>
+          <div class="hero-card-prices">
+            <span class="original">CHF 89.00</span>
+            <span class="deal">CHF 49.00</span>
+            <span class="save">-45%</span>
+          </div>
+        </div>
+        <div class="hero-card vip">
+          <div class="vip-badge-tag">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+            VIP EXKLUSIV
+          </div>
+          <div class="hero-card-header">
+            <span class="hero-card-cat">Wellness</span>
+            <span class="hero-card-timer"><span class="timer-dot"></span> 4h 12m</span>
+          </div>
+          <h3>Spa-Tag fuer Zwei im Thermalbad Zurzach</h3>
+          <div class="hero-card-prices">
+            <span class="original">CHF 240.00</span>
+            <span class="deal">CHF 119.00</span>
+            <span class="save">-50%</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <span class="hero-card-cat">Fitness</span>
+            <span class="hero-card-timer"><span class="timer-dot"></span> 45m</span>
+          </div>
+          <h3>1 Monat CrossFit bei Urban Athletics, Basel</h3>
+          <div class="hero-card-prices">
+            <span class="original">CHF 150.00</span>
+            <span class="deal">CHF 59.00</span>
+            <span class="save">-61%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal"><div class="stat-num">2'500<span class="highlight">+</span></div><div class="stat-label">Aktive Deals</div></div>
+      <div class="stat-item reveal reveal-delay-1"><div class="stat-num">180<span class="highlight">+</span></div><div class="stat-label">Partner-Firmen</div></div>
+      <div class="stat-item reveal reveal-delay-2"><div class="stat-num">45'000<span class="highlight">+</span></div><div class="stat-label">Registrierte Nutzer</div></div>
+      <div class="stat-item reveal reveal-delay-3"><div class="stat-num">CHF 2.1<span class="highlight">M</span></div><div class="stat-label">Gespart von Nutzern</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works" id="wie-funktionierts">
+  <div class="container">
+    <div class="how-header reveal">
+      <div class="section-label">So funktionierts</div>
+      <h2 class="section-title">In 3 Schritten zum Deal</h2>
+      <p class="section-sub">Ob als Kunde oder als Firma &mdash; der Einstieg ist kinderleicht.</p>
+    </div>
+
+    <div class="how-tabs reveal">
+      <button class="how-tab active" onclick="switchTab('kunden')">Fuer Kunden</button>
+      <button class="how-tab" onclick="switchTab('firmen')">Fuer Firmen</button>
+    </div>
+
+    <div class="how-steps active" id="tab-kunden">
+      <div class="step-card reveal">
+        <div class="step-icon">&#128270;</div>
+        <div class="step-num">1</div>
+        <h3>Deal finden</h3>
+        <p>Durchsuche aktive Deals in deiner Naehe nach Kategorie, Standort oder Rabatthoehe.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-icon">&#128179;</div>
+        <div class="step-num">2</div>
+        <h3>Sofort buchen</h3>
+        <p>Sichere dir den Deal mit einem Klick. Bezahle sicher online und erhalte deinen Gutschein.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-icon">&#127881;</div>
+        <div class="step-num">3</div>
+        <h3>Geniessen & sparen</h3>
+        <p>Zeige deinen Gutschein beim Partner vor und geniesse dein Angebot zum Spezialpreis.</p>
+      </div>
+    </div>
+
+    <div class="how-steps" id="tab-firmen">
+      <div class="step-card reveal">
+        <div class="step-icon">&#128221;</div>
+        <div class="step-num">1</div>
+        <h3>Deal erstellen</h3>
+        <p>Erstelle dein Angebot in Minuten. Lege Preis, Laufzeit und maximale Anzahl fest.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-icon">&#128640;</div>
+        <div class="step-num">2</div>
+        <h3>Live schalten</h3>
+        <p>Dein Deal geht sofort live und erreicht tausende potenzielle Kunden in deiner Region.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-icon">&#128200;</div>
+        <div class="step-num">3</div>
+        <h3>Kunden gewinnen</h3>
+        <p>Verfolge Buchungen in Echtzeit und gewinne neue Stammkunden fuer dein Geschaeft.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEALS SHOWCASE -->
+<section class="deals" id="deals">
+  <div class="container">
+    <div class="deals-header reveal">
+      <div class="section-label">Live Deals</div>
+      <h2 class="section-title">Was gerade los ist</h2>
+      <p class="section-sub">Echte Deals. Echte Firmen. Zeitlich begrenzt.</p>
+    </div>
+
+    <div class="deals-filter reveal">
+      <button class="filter-btn active">Alle</button>
+      <button class="filter-btn">Restaurant</button>
+      <button class="filter-btn">Fitness</button>
+      <button class="filter-btn">Beauty</button>
+      <button class="filter-btn">Shopping</button>
+      <button class="filter-btn">Erlebnis</button>
+    </div>
+
+    <div class="deals-grid">
+      <!-- Deal 1 -->
+      <div class="deal-card reveal">
+        <div class="deal-img" style="background:linear-gradient(135deg,#2d1810,#5c3a2a)">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem">&#127858;</div>
+          <div class="deal-overlay">
+            <span class="deal-category">Restaurant</span>
+            <span class="deal-timer-badge"><span class="pulse"></span> 1h 23m</span>
+          </div>
+        </div>
+        <div class="deal-body">
+          <div class="deal-business">Trattoria Bella Vista, Bern</div>
+          <div class="deal-title">Pizza & Pasta Abend fuer 2 Personen inkl. Dessert</div>
+          <div class="deal-pricing">
+            <span class="original">CHF 98.00</span>
+            <span class="price">CHF 49.00</span>
+            <span class="save-pct">-50%</span>
+          </div>
+          <div class="deal-progress">
+            <div class="deal-progress-bar"><div class="deal-progress-fill" style="width:68%"></div></div>
+            <div class="deal-progress-text"><span>68 verkauft</span><span>32 uebrig</span></div>
+          </div>
+          <div class="deal-footer">
+            <button class="deal-btn">Jetzt sichern</button>
+            <span class="deal-rating">&#9733; 4.8</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deal 2 - VIP -->
+      <div class="deal-card vip-deal reveal reveal-delay-1">
+        <div class="deal-img" style="background:linear-gradient(135deg,#1a3a1a,#2d5c2d)">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem">&#128134;</div>
+          <div class="deal-overlay">
+            <span class="deal-category">Wellness</span>
+            <span class="deal-timer-badge"><span class="pulse"></span> 5h 47m</span>
+          </div>
+        </div>
+        <div class="deal-body">
+          <div class="vip-exclusive-tag">
+            <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+            VIP Gold Exklusiv
+          </div>
+          <div class="deal-business">Aqua Spa & Wellness, Luzern</div>
+          <div class="deal-title">Ganztaegiger Spa-Eintritt + 60min Massage</div>
+          <div class="deal-pricing">
+            <span class="original">CHF 320.00</span>
+            <span class="price">CHF 149.00</span>
+            <span class="save-pct">-53%</span>
+          </div>
+          <div class="deal-progress">
+            <div class="deal-progress-bar"><div class="deal-progress-fill" style="width:82%"></div></div>
+            <div class="deal-progress-text"><span>82 verkauft</span><span>18 uebrig</span></div>
+          </div>
+          <div class="deal-footer">
+            <button class="deal-btn">Jetzt sichern</button>
+            <span class="deal-rating">&#9733; 4.9</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deal 3 -->
+      <div class="deal-card reveal reveal-delay-2">
+        <div class="deal-img" style="background:linear-gradient(135deg,#1a1a3e,#3a2d5c)">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem">&#128170;</div>
+          <div class="deal-overlay">
+            <span class="deal-category">Fitness</span>
+            <span class="deal-timer-badge"><span class="pulse"></span> 3h 05m</span>
+          </div>
+        </div>
+        <div class="deal-body">
+          <div class="deal-business">FitFactory, Zuerich</div>
+          <div class="deal-title">3 Monate Mitgliedschaft + Personal Training Session</div>
+          <div class="deal-pricing">
+            <span class="original">CHF 450.00</span>
+            <span class="price">CHF 199.00</span>
+            <span class="save-pct">-56%</span>
+          </div>
+          <div class="deal-progress">
+            <div class="deal-progress-bar"><div class="deal-progress-fill" style="width:45%"></div></div>
+            <div class="deal-progress-text"><span>45 verkauft</span><span>55 uebrig</span></div>
+          </div>
+          <div class="deal-footer">
+            <button class="deal-btn">Jetzt sichern</button>
+            <span class="deal-rating">&#9733; 4.7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deal 4 -->
+      <div class="deal-card reveal">
+        <div class="deal-img" style="background:linear-gradient(135deg,#3e1a2d,#5c2d3a)">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem">&#128132;</div>
+          <div class="deal-overlay">
+            <span class="deal-category">Beauty</span>
+            <span class="deal-timer-badge"><span class="pulse"></span> 6h 18m</span>
+          </div>
+        </div>
+        <div class="deal-body">
+          <div class="deal-business">Salon Magnifique, Genf</div>
+          <div class="deal-title">Komplett-Styling: Schnitt, Farbe & Pflege</div>
+          <div class="deal-pricing">
+            <span class="original">CHF 280.00</span>
+            <span class="price">CHF 129.00</span>
+            <span class="save-pct">-54%</span>
+          </div>
+          <div class="deal-progress">
+            <div class="deal-progress-bar"><div class="deal-progress-fill" style="width:91%"></div></div>
+            <div class="deal-progress-text"><span>91 verkauft</span><span>9 uebrig</span></div>
+          </div>
+          <div class="deal-footer">
+            <button class="deal-btn">Jetzt sichern</button>
+            <span class="deal-rating">&#9733; 4.6</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deal 5 - VIP -->
+      <div class="deal-card vip-deal reveal reveal-delay-1">
+        <div class="deal-img" style="background:linear-gradient(135deg,#2d2d1a,#5c5c2d)">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem">&#127863;</div>
+          <div class="deal-overlay">
+            <span class="deal-category">Erlebnis</span>
+            <span class="deal-timer-badge"><span class="pulse"></span> 12h 30m</span>
+          </div>
+        </div>
+        <div class="deal-body">
+          <div class="vip-exclusive-tag">
+            <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+            VIP Platinum Exklusiv
+          </div>
+          <div class="deal-business">Weinberg Estate, Wallis</div>
+          <div class="deal-title">Private Weindegustation fuer 4 mit 6 Flaschen</div>
+          <div class="deal-pricing">
+            <span class="original">CHF 580.00</span>
+            <span class="price">CHF 249.00</span>
+            <span class="save-pct">-57%</span>
+          </div>
+          <div class="deal-progress">
+            <div class="deal-progress-bar"><div class="deal-progress-fill" style="width:35%"></div></div>
+            <div class="deal-progress-text"><span>7 verkauft</span><span>13 uebrig</span></div>
+          </div>
+          <div class="deal-footer">
+            <button class="deal-btn">Jetzt sichern</button>
+            <span class="deal-rating">&#9733; 5.0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deal 6 -->
+      <div class="deal-card reveal reveal-delay-2">
+        <div class="deal-img" style="background:linear-gradient(135deg,#1a2d3e,#2d4a5c)">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem">&#128722;</div>
+          <div class="deal-overlay">
+            <span class="deal-category">Shopping</span>
+            <span class="deal-timer-badge"><span class="pulse"></span> 23m</span>
+          </div>
+        </div>
+        <div class="deal-body">
+          <div class="deal-business">ModaSwiss Boutique, St. Gallen</div>
+          <div class="deal-title">CHF 200 Einkaufsgutschein fuer Sommerkollektion</div>
+          <div class="deal-pricing">
+            <span class="original">CHF 200.00</span>
+            <span class="price">CHF 99.00</span>
+            <span class="save-pct">-51%</span>
+          </div>
+          <div class="deal-progress">
+            <div class="deal-progress-bar"><div class="deal-progress-fill" style="width:95%"></div></div>
+            <div class="deal-progress-text"><span>95 verkauft</span><span>5 uebrig</span></div>
+          </div>
+          <div class="deal-footer">
+            <button class="deal-btn">Jetzt sichern</button>
+            <span class="deal-rating">&#9733; 4.5</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR BUSINESSES -->
+<section class="businesses" id="fuer-firmen">
+  <div class="container">
+    <div class="biz-grid">
+      <div class="biz-content reveal">
+        <div class="section-label">Fuer Unternehmen</div>
+        <h2 class="section-title">Neue Kunden. Null Risiko.</h2>
+        <p class="section-sub">Erreiche tausende kaufbereite Kunden in deiner Region. Du zahlst nur bei Erfolg.</p>
+        <div class="biz-features">
+          <div class="biz-feature">
+            <div class="biz-feature-icon">&#127919;</div>
+            <div>
+              <h4>Gezielte Reichweite</h4>
+              <p>Dein Angebot erreicht genau die Kunden in deiner Naehe, die aktiv nach Deals suchen.</p>
+            </div>
+          </div>
+          <div class="biz-feature">
+            <div class="biz-feature-icon">&#128176;</div>
+            <div>
+              <h4>Keine Vorabkosten</h4>
+              <p>Deal erstellen ist gratis. Du zahlst nur eine kleine Provision pro erfolgreicher Buchung.</p>
+            </div>
+          </div>
+          <div class="biz-feature">
+            <div class="biz-feature-icon">&#128202;</div>
+            <div>
+              <h4>Echtzeit-Analytics</h4>
+              <p>Verfolge Views, Klicks und Buchungen live. Optimiere deine Deals basierend auf Daten.</p>
+            </div>
+          </div>
+          <div class="biz-feature">
+            <div class="biz-feature-icon">&#128257;</div>
+            <div>
+              <h4>Stammkunden gewinnen</h4>
+              <p>72% unserer Deal-Kunden kommen zurueck und werden zu Stammkunden.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="biz-visual reveal reveal-delay-2">
+        <div class="biz-dashboard">
+          <div class="biz-dash-header">
+            <h4>&#128200; Business Dashboard</h4>
+            <span>Letzte 30 Tage</span>
+          </div>
+          <div class="biz-dash-stats">
+            <div class="biz-stat"><div class="num">847</div><div class="label">Buchungen</div></div>
+            <div class="biz-stat"><div class="num" style="color:var(--gold)">CHF 12.4k</div><div class="label">Umsatz</div></div>
+            <div class="biz-stat"><div class="num">94%</div><div class="label">Zufriedenheit</div></div>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.35);margin-bottom:8px">Buchungsverlauf</div>
+          <div class="biz-chart">
+            <div class="biz-chart-bar" style="height:35%"></div>
+            <div class="biz-chart-bar" style="height:48%"></div>
+            <div class="biz-chart-bar" style="height:42%"></div>
+            <div class="biz-chart-bar" style="height:65%"></div>
+            <div class="biz-chart-bar" style="height:55%"></div>
+            <div class="biz-chart-bar" style="height:72%"></div>
+            <div class="biz-chart-bar" style="height:68%"></div>
+            <div class="biz-chart-bar" style="height:85%"></div>
+            <div class="biz-chart-bar" style="height:78%"></div>
+            <div class="biz-chart-bar" style="height:92%"></div>
+            <div class="biz-chart-bar" style="height:88%"></div>
+            <div class="biz-chart-bar" style="height:100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIP SWISS -->
+<section class="vip-section" id="vip">
+  <div class="container">
+    <div class="vip-header reveal">
+      <div class="section-label">VIP Swiss Mitgliedschaft</div>
+      <h2 class="section-title">Exklusive Vorteile.<br>Bessere Deals.</h2>
+      <p class="section-sub">VIP-Mitglieder erhalten Zugang zu exklusiven Deals, hoeheren Rabatten und Premium-Erlebnissen, die normalen Nutzern verborgen bleiben.</p>
+    </div>
+
+    <div class="vip-tiers">
+      <!-- Silver -->
+      <div class="vip-tier tier-silver reveal">
+        <div class="tier-icon">&#9790;</div>
+        <h3>Silver</h3>
+        <div class="tier-price">CHF 9.90 <span>/ Monat</span></div>
+        <div class="tier-period">oder CHF 99 / Jahr (2 Monate gratis)</div>
+        <ul class="tier-benefits">
+          <li><span class="check">&#10003;</span> Fruehzeitiger Zugang zu neuen Deals</li>
+          <li><span class="check">&#10003;</span> 5% Extra-Rabatt auf alle Deals</li>
+          <li><span class="check">&#10003;</span> Exklusive Silver-Only Deals</li>
+          <li><span class="check">&#10003;</span> Digitale VIP-Karte</li>
+          <li><span class="check">&#10003;</span> Priority Kundenservice</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Silver waehlen</a>
+      </div>
+
+      <!-- Gold (Featured) -->
+      <div class="vip-tier tier-gold featured reveal reveal-delay-1">
+        <div class="tier-icon">&#9733;</div>
+        <h3>Gold</h3>
+        <div class="tier-price">CHF 19.90 <span>/ Monat</span></div>
+        <div class="tier-period">oder CHF 199 / Jahr (2 Monate gratis)</div>
+        <ul class="tier-benefits">
+          <li><span class="check">&#10003;</span> Alles aus Silver, plus:</li>
+          <li><span class="check">&#10003;</span> 15% Extra-Rabatt auf alle Deals</li>
+          <li><span class="check">&#10003;</span> Exklusive Gold & Silver Deals</li>
+          <li><span class="check">&#10003;</span> Kostenlose Stornierung</li>
+          <li><span class="check">&#10003;</span> Monatliche Ueberraschungs-Deals</li>
+          <li><span class="check">&#10003;</span> Partner-Vergünstigungen offline</li>
+        </ul>
+        <a href="#" class="btn btn-gold">Gold waehlen</a>
+      </div>
+
+      <!-- Platinum -->
+      <div class="vip-tier tier-platinum reveal reveal-delay-2">
+        <div class="tier-icon">&#128142;</div>
+        <h3>Platinum</h3>
+        <div class="tier-price">CHF 39.90 <span>/ Monat</span></div>
+        <div class="tier-period">oder CHF 399 / Jahr (2 Monate gratis)</div>
+        <ul class="tier-benefits">
+          <li><span class="check">&#10003;</span> Alles aus Gold, plus:</li>
+          <li><span class="check">&#10003;</span> 25% Extra-Rabatt auf alle Deals</li>
+          <li><span class="check">&#10003;</span> Alle exklusiven Deals</li>
+          <li><span class="check">&#10003;</span> Persoenlicher Concierge</li>
+          <li><span class="check">&#10003;</span> VIP Events & Einladungen</li>
+          <li><span class="check">&#10003;</span> Geschenk-Deals fuer Freunde</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Platinum waehlen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS MODEL -->
+<section class="model" id="geschaeftsmodell">
+  <div class="container">
+    <div class="model-header reveal">
+      <div class="section-label">Geschaeftsmodell</div>
+      <h2 class="section-title">Drei Saeulen. Ein Oekosystem.</h2>
+      <p class="section-sub">Nachhaltige Einnahmen aus mehreren Quellen &mdash; fair fuer alle Beteiligten.</p>
+    </div>
+    <div class="model-grid">
+      <div class="model-card reveal">
+        <div class="model-icon">&#128179;</div>
+        <h3>Transaktions&shy;gebuehren</h3>
+        <p>Kleine Provision pro erfolgreicher Deal-Buchung. Die Firma zahlt nur bei Erfolg &mdash; kein Risiko.</p>
+        <div class="model-pct">12-18%</div>
+      </div>
+      <div class="model-card reveal reveal-delay-1">
+        <div class="model-icon" style="background:var(--gold-glow)">&#11088;</div>
+        <h3>VIP Mitglied&shy;schaften</h3>
+        <p>Monatliche/jaehrliche Abo-Einnahmen von Silver, Gold und Platinum Mitgliedern.</p>
+        <div class="model-pct" style="color:var(--gold)">CHF 9.90-39.90</div>
+      </div>
+      <div class="model-card reveal reveal-delay-2">
+        <div class="model-icon">&#128640;</div>
+        <h3>Premium Platzierung</h3>
+        <p>Firmen koennen ihre Deals prominent platzieren: Top-Position, Featured-Badge, Newsletter-Platz.</p>
+        <div class="model-pct">ab CHF 49</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="kontakt">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="section-label">Bereit?</div>
+      <h2 class="section-title">Die Schweiz wartet<br>auf deine Deals.</h2>
+      <p class="section-sub">Werde jetzt Teil des groessten Deal-Netzwerks der Schweiz. Fuer Kunden kostenlos. Fuer Firmen risikofrei.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">Kostenlos registrieren &rarr;</a>
+        <a href="#" class="btn btn-gold">&#11088; VIP Mitglied werden</a>
+        <a href="#fuer-firmen" class="btn btn-outline">Ich bin eine Firma</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="font-size:1.4rem">Live<span style="color:var(--crimson)">Deal</span><span class="dot"></span></div>
+        <p>Die fuehrende Plattform fuer zeitlich begrenzte Deals in der Schweiz. Spare bei lokalen Geschaeften &mdash; oder gewinne neue Kunden fuer dein Unternehmen.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Plattform</h4>
+        <a href="#">Deals entdecken</a>
+        <a href="#">VIP Mitgliedschaft</a>
+        <a href="#">Fuer Firmen</a>
+        <a href="#">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Unternehmen</h4>
+        <a href="#">Ueber uns</a>
+        <a href="#">Karriere</a>
+        <a href="#">Presse</a>
+        <a href="#">Kontakt</a>
+      </div>
+      <div class="footer-col">
+        <h4>Rechtliches</h4>
+        <a href="#">AGB</a>
+        <a href="#">Datenschutz</a>
+        <a href="#">Impressum</a>
+        <a href="#">Cookie-Richtlinien</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 LiveDeal.ch &mdash; Alle Rechte vorbehalten.</span>
+      <span class="swiss-made"><span class="swiss-cross"></span> Swiss Made with &#10084;</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Scroll reveal
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealElements.forEach(el => revealObserver.observe(el));
+
+// Tab switching
+function switchTab(tab) {
+  document.querySelectorAll('.how-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.how-steps').forEach(s => { s.classList.remove('active'); });
+  if (tab === 'kunden') {
+    document.querySelectorAll('.how-tab')[0].classList.add('active');
+    document.getElementById('tab-kunden').classList.add('active');
+  } else {
+    document.querySelectorAll('.how-tab')[1].classList.add('active');
+    document.getElementById('tab-firmen').classList.add('active');
+  }
+  document.querySelectorAll('.how-steps.active .step-card').forEach(c => {
+    c.classList.remove('visible');
+    setTimeout(() => c.classList.add('visible'), 50);
+  });
+}
+
+// Animate chart bars on scroll
+const chartObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.biz-chart-bar').forEach((bar, i) => {
+        const h = bar.style.height;
+        bar.style.height = '0%';
+        setTimeout(() => { bar.style.height = h; }, i * 80);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.biz-chart').forEach(c => chartObserver.observe(c));
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Filter buttons (visual only for concept)
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
